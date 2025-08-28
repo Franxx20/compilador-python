@@ -2,7 +2,6 @@
 
 # Se importan los tokens generado previamente en el lexer
 from lexer import tokens
-# import ply.yacc as yacc  
 from ply.yacc import * # analizador sintactico
 from pathlib import Path
 
@@ -26,7 +25,7 @@ diccionarioComparadoresNot = {
 
 
 precedence = (
-    ('right', 'ASIGNACION'),
+    ('right', 'OP_ASIGNACION'),
     ('left', 'MENOS'),
     # ('left', 'MAS'),
     ('left', 'MULTIPLICACION', 'DIVISION'),
@@ -34,7 +33,7 @@ precedence = (
 )
 
 
-def p_start(p:YaccProduction):
+def p_start(_p:YaccProduction):
     '''start : programa'''
     print('FIN')
 
@@ -63,8 +62,9 @@ def p_declaracion(p:YaccProduction):
 # INT this must be changed to type
 def p_decl_lista(p:YaccProduction):
     '''decl_lista : var_lista COLON TIPO 
+                  | decl_lista  var_lista COLON TIPO
     '''
-    print(f'decl_lista -> var_lista COLON TIPO')
+    print('decl_lista -> var_lista COLON TIPO')
 
 def p_tipo(p:YaccProduction):
     '''TIPO : TIPO_INT
@@ -75,14 +75,18 @@ def p_tipo(p:YaccProduction):
     # p[0] = p[1]
 
 def p_var_lista(p:YaccProduction):
-    '''var_lista : VARIABLE
+    '''var_lista : ID
+                 | var_lista COMA ID
     '''
-    print(f'var_lista -> VARIABLE')
+    if len(p) >= 3:
+        print(f'var_lista -> VAR_LISTA COMA ID: {p[3]}')
+    else:
+        print(f'var_lista -> ID: {p[1]}')
 
 def p_asignacion(p:YaccProduction):
-    '''asignacion : VARIABLE ASIGNACION expresion
+    '''asignacion : ID OP_ASIGNACION expresion
     '''
-    print(f'VARIABLE ASIGNACION {p.slice[3].type} -> asignacion')
+    print(f'asignacion -> ID:{p.slice[1].value} OP_ASIGNACION expresion')
 
 def p_expresion_menos(p:YaccProduction):
     'expresion : expresion MENOS termino'
@@ -116,14 +120,14 @@ def p_elemento_expresion(p:YaccProduction):
 
 def p_elemento(p:YaccProduction):
     '''elemento : N_ENTERO
-                | VARIABLE
+                | ID
     '''
     print(f'{p.slice[1].type} -> elemento')
     p[0] = p[1]
 
 
 # Error rule for syntax errors
-def p_error(p:YaccError):
+def p_error(p):
     raise Exception(f"Error en la linea {p.lineno or ''} at {p.value or ''}")
 
 

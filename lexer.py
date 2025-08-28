@@ -32,13 +32,13 @@ tokens = [
     'COMA',
     'COLON',
 
-    'ASIGNACION',
+    'OP_ASIGNACION',
 
     'N_FLOAT',
     'N_ENTERO',
     'STRING',
 
-    'VARIABLE',
+    'ID',
 
     'IGUAL',
     'DISTINTO',
@@ -70,7 +70,7 @@ t_MAYOR_IGUAL = r'>='
 t_MENOR = r'<'
 t_MAYOR = r'>'
 
-t_ASIGNACION = r':='
+t_OP_ASIGNACION = r':='
 
 t_A_PARENTESIS = r'\('
 t_C_PARENTESIS = r'\)'
@@ -90,9 +90,9 @@ def t_COMENTARIO(t:LexToken):
     t.lexer.lineno += t.value.count('\n')
 
 
-def t_VARIABLE(t:LexToken):
+def t_ID(t:LexToken):
     r'[a-zA-Z](\w|_)*'
-    t.type = reserved.get(t.value, 'VARIABLE')
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 def t_N_FLOAT(t:LexToken):

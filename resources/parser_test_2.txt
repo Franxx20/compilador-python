@@ -1,3 +1,8 @@
+#+
 init {
-    a1 : Float
+    a1, b2, c3 : Float
+    d1, e2, f3 : Int
 }
++#
+
+a := 2
