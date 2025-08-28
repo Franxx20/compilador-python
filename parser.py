@@ -27,7 +27,7 @@ diccionarioComparadoresNot = {
 precedence = (
     ('right', 'OP_ASIGNACION'),
     ('left', 'MENOS'),
-    # ('left', 'MAS'),
+    ('left', 'MAS'),
     ('left', 'MULTIPLICACION', 'DIVISION'),
     ('left', 'A_PARENTESIS', 'C_PARENTESIS'),
 )
@@ -43,21 +43,22 @@ def p_programa(p:YaccProduction):
                 | sentencia
     '''
     if len(p) == 3:
-        print(f'programa sentencia -> programa')
+        print('programa sentencia -> programa')
     else:
-        print(f'sentencia -> programa')
+        print('sentencia -> programa')
 
 
 def p_sentencia(p:YaccProduction):
     '''sentencia : declaracion
                 |  asignacion
+                |  iteracion
     '''
-    print(f'{p.slice[1].type} -> sentencia2 ')
+    print(f'{p.slice[1].type} -> sentencia ')
 
 def p_declaracion(p:YaccProduction):
     '''declaracion : INIT A_LLAVES decl_lista C_LLAVES
     '''
-    print(f'DECLARACION -> INIT A_LLAVES decl_lista C_LLAVES')
+    print('DECLARACION -> INIT A_LLAVES decl_lista C_LLAVES')
 
 # INT this must be changed to type
 def p_decl_lista(p:YaccProduction):
@@ -88,10 +89,23 @@ def p_asignacion(p:YaccProduction):
     '''
     print(f'asignacion -> ID:{p.slice[1].value} OP_ASIGNACION expresion')
 
+def p_iteracion(p:YaccProduction):
+    '''iteracion : WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES
+    '''
+    print('iteracion : WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES')
+
+def p_condicion(p:YaccProduction):
+    '''condicion : ID MAYOR ID
+    '''
+    print('TODO CONDICION')
+
 def p_expresion_menos(p:YaccProduction):
     'expresion : expresion MENOS termino'
     print('expresion - termino -> expresion')
 
+def p_expresion_mas(p:YaccProduction):
+    'expresion : expresion MAS termino'
+    print('expresion + termino -> expresion')
 
 def p_expresion_termino(p:YaccProduction):
     'expresion : termino'
@@ -120,9 +134,10 @@ def p_elemento_expresion(p:YaccProduction):
 
 def p_elemento(p:YaccProduction):
     '''elemento : N_ENTERO
+                | N_FLOAT
                 | ID
     '''
-    print(f'{p.slice[1].type} -> elemento')
+    print(f'{p.slice[1].type}:{p.slice[1].value} -> elemento')
     p[0] = p[1]
 
 
