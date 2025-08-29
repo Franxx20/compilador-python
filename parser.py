@@ -73,7 +73,7 @@ def p_tipo(p:YaccProduction):
             | TIPO_STRING
     '''
     print(f'{p.slice[1].type}-> TIPO')
-    # p[0] = p[1]
+    p[0] = p[1]
 
 def p_var_lista(p:YaccProduction):
     '''var_lista : ID
