@@ -17,7 +17,7 @@ b := a - 2
 b := a + 2
 +#
 
-while (a > b)
+while ((a == b))
 {
     c := 3
 }

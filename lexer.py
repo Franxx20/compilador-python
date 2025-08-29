@@ -107,7 +107,7 @@ def t_N_ENTERO(t:LexToken):
 
 def t_STRING(t:LexToken):
     r'\"[^\"]*\"'
-    # We remove the quotes from the value so the parser gets the clean string.
+    # removemos las comillas dobles para obtener un string limpio
     t.value = t.value[1:-1]
     return t
 

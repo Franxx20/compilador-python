@@ -53,26 +53,26 @@ def p_sentencia(p:YaccProduction):
                 |  asignacion
                 |  iteracion
     '''
-    print(f'{p.slice[1].type} -> sentencia ')
+    print(f'{p.slice[1].type} -> sentencia')
 
 def p_declaracion(p:YaccProduction):
     '''declaracion : INIT A_LLAVES decl_lista C_LLAVES
     '''
-    print('DECLARACION -> INIT A_LLAVES decl_lista C_LLAVES')
+    print('INIT A_LLAVES decl_lista C_LLAVES -> DECLARACION')
 
 # INT this must be changed to type
 def p_decl_lista(p:YaccProduction):
     '''decl_lista : var_lista COLON TIPO 
                   | decl_lista  var_lista COLON TIPO
     '''
-    print('decl_lista -> var_lista COLON TIPO')
+    print('var_lista COLON TIPO -> decl_lista')
 
 def p_tipo(p:YaccProduction):
     '''TIPO : TIPO_INT
             | TIPO_FLOAT
             | TIPO_STRING
     '''
-    print(f'TIPO -> {p.slice[1].type}')
+    print(f'{p.slice[1].type}-> TIPO')
     # p[0] = p[1]
 
 def p_var_lista(p:YaccProduction):
@@ -80,24 +80,64 @@ def p_var_lista(p:YaccProduction):
                  | var_lista COMA ID
     '''
     if len(p) >= 3:
-        print(f'var_lista -> VAR_LISTA COMA ID: {p[3]}')
+        print(f'VAR_LISTA COMA ID: {p[3]} -> var_lista')
     else:
-        print(f'var_lista -> ID: {p[1]}')
+        print(f'ID: {p[1]} -> var_lista')
 
 def p_asignacion(p:YaccProduction):
     '''asignacion : ID OP_ASIGNACION expresion
     '''
-    print(f'asignacion -> ID:{p.slice[1].value} OP_ASIGNACION expresion')
+    print(f'ID:{p.slice[1].value} OP_ASIGNACION expresion -> asignacion')
 
 def p_iteracion(p:YaccProduction):
     '''iteracion : WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES
     '''
-    print('iteracion : WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES')
+    print('WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES -> iteracion')
 
 def p_condicion(p:YaccProduction):
-    '''condicion : ID MAYOR ID
+    '''condicion : condicion OR conjuncion
+                 | conjuncion
     '''
-    print('TODO CONDICION')
+    if len(p) >= 3:
+        print(f' condicion OR conjuncion -> condicion')
+    else:
+        print(f'conjuncion -> condicion')
+
+def p_conjuncion(p:YaccProduction):
+    '''conjuncion : conjuncion AND termino_logico
+                  | termino_logico
+    '''
+    if len(p) >= 3:
+        print(f'conjuncion AND termino_logico -> conjuncion')
+    else:
+        print(f'termino_logico -> conjuncion')
+
+def p_termino_logico(p:YaccProduction):
+    '''termino_logico : comparacion
+                      | NOT termino_logico
+                      | A_PARENTESIS condicion C_PARENTESIS
+    '''
+    if len(p) == 4:
+        print(f'A_PARENTESIS condicion C_PARENTESIS -> termino_logico')
+    elif len(p) == 3:
+        print(f'NOT termino_logico -> termino_logico')
+    elif len(p) == 2:
+        print(f'comparacion -> termino_logico')
+
+def p_comparacion(p:YaccProduction):
+    '''comparacion : expresion comparador expresion
+    '''
+    print('expresion comparador expresion -> comparacion')
+
+def p_comparador(p:YaccProduction):
+    '''comparador : IGUAL
+                  | DISTINTO
+                  | MAYOR
+                  | MENOR
+                  | MAYOR_IGUAL
+                  | MENOR_IGUAL
+    '''
+    print(f'{p.slice[1].type}({p.slice[1].value}) -> comparador')
 
 def p_expresion_menos(p:YaccProduction):
     'expresion : expresion MENOS termino'
@@ -109,7 +149,7 @@ def p_expresion_mas(p:YaccProduction):
 
 def p_expresion_termino(p:YaccProduction):
     'expresion : termino'
-    print('termino -> expresion')
+    print('termino -> expresion\n')
 
 
 def p_termino_multiplicacion(p:YaccProduction):
@@ -137,7 +177,7 @@ def p_elemento(p:YaccProduction):
                 | N_FLOAT
                 | ID
     '''
-    print(f'{p.slice[1].type}:{p.slice[1].value} -> elemento')
+    print(f'\n{p.slice[1].type}:{p.slice[1].value} -> elemento')
     p[0] = p[1]
 
 
