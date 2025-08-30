@@ -87,7 +87,7 @@ def p_var_lista(p:YaccProduction):
 def p_asignacion(p:YaccProduction):
     '''asignacion : ID OP_ASIGNACION expresion
     '''
-    print(f'ID:{p.slice[1].value} OP_ASIGNACION expresion -> asignacion')
+    print(f'\nID:{p.slice[1].value} OP_ASIGNACION expresion -> asignacion\n')
 
 def p_iteracion(p:YaccProduction):
     '''iteracion : WHILE A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES
