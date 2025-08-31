@@ -52,6 +52,8 @@ def p_sentencia(p:YaccProduction):
     '''sentencia : declaracion
                 |  asignacion
                 |  iteracion
+                |  seleccion
+                |  entrada_salida
     '''
     print(f'{p.slice[1].type} -> sentencia')
 
@@ -139,46 +141,69 @@ def p_comparador(p:YaccProduction):
     '''
     print(f'{p.slice[1].type}({p.slice[1].value}) -> comparador')
 
-def p_expresion_menos(p:YaccProduction):
-    'expresion : expresion MENOS termino'
-    print('expresion - termino -> expresion')
+def p_seleccion(p:YaccProduction):
+    '''seleccion : IF A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES
+                 | IF A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES ELSE A_LLAVES programa C_LLAVES
+    '''
+    if len(p) == 8:
+        print('IF A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES')
+    elif len(p) == 12:
+        print('IF A_PARENTESIS condicion C_PARENTESIS A_LLAVES programa C_LLAVES ELSE A_LLAVES programa C_LLAVES')
 
-def p_expresion_mas(p:YaccProduction):
-    'expresion : expresion MAS termino'
-    print('expresion + termino -> expresion')
+def p_entrada_salida(p:YaccProduction):
+    '''entrada_salida : READ A_PARENTESIS ID C_PARENTESIS
+                     | WRITE A_PARENTESIS expresion C_PARENTESIS
+    '''
+    if p.slice[1].type == 'READ':
+        print('READ A_PARENTESIS ID C_PARENTESIS -> entrada_salida')
+    elif p.slice[1].type == 'WRITE':
+        print('WRITE A_PARENTESIS expresion C_PARENTESIS -> entrada_salida')
 
-def p_expresion_termino(p:YaccProduction):
-    'expresion : termino'
-    print('termino -> expresion\n')
+def p_expresion(p:YaccProduction):
+    '''expresion : expresion MENOS termino
+                | expresion MAS termino
+                | termino
+    '''
+    if len(p) == 4:
+        if p.slice[2].type == 'MAS':
+            print('expresion + termino -> expresion')
+        elif p.slice[2].type == 'MENOS':
+            print('expresion - termino -> expresion')
+    elif len(p) == 2:
+        print('termino -> expresion\n')
 
-
-def p_termino_multiplicacion(p:YaccProduction):
-    'termino : termino MULTIPLICACION elemento'
-    print('termino * elemento -> termino')
-
-
-def p_termino_division(p:YaccProduction):
-    'termino : termino DIVISION elemento'
-    print('termino / elemento -> termino')
-
-
-def p_termino_elemento(p:YaccProduction):
-    'termino : elemento'
-    print('elemento -> termino')
-
-
-def p_elemento_expresion(p:YaccProduction):
-    'elemento : A_PARENTESIS expresion C_PARENTESIS'
-    print('( expresion ) -> elemento')
-
+def p_termino(p:YaccProduction):
+    '''termino : termino MULTIPLICACION elemento
+              | termino DIVISION elemento
+              | elemento
+    '''
+    if len(p) == 4:
+        if p.slice[2].type == 'MULTIPLICACION':
+            print('termino * elemento -> termino')
+        elif p.slice[2].type == 'DIVISION':
+            print('termino / elemento -> termino')
+    elif len(p) == 2:
+        print('elemento -> termino')
 
 def p_elemento(p:YaccProduction):
     '''elemento : N_ENTERO
+                | MENOS N_ENTERO
                 | N_FLOAT
+                | MENOS N_FLOAT
                 | ID
+                | MENOS ID
+                | STRING
+                | A_PARENTESIS expresion C_PARENTESIS
     '''
-    print(f'\n{p.slice[1].type}:{p.slice[1].value} -> elemento')
-    p[0] = p[1]
+    if len(p) == 4:
+        print(f'A_PARENTESIS expresion C_PARENTESIS -> elemento')
+    elif len(p) == 3:
+        print(f'MENOS {p.slice[2].type}:{p.slice[2].value} -> elemento')
+        p[0] = -p[2]
+    elif len(p) == 2:
+        print(f'{p.slice[1].type}:{p.slice[1].value} -> elemento')
+        p[0] = p[1]
+
 
 
 # Error rule for syntax errors

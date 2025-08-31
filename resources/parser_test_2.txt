@@ -17,7 +17,30 @@ b := a - 2
 b := a + 2
 +#
 
+#+
 while ((a == b))
 {
     c := 3
 }
++#
+
+#+
+if (a==b)
+{
+    c := 3
+}
++#
+
+#+
+write("hola")
++#
+
+#+
+x := 27 - c
+x := r + 500
++#
+x := 34 * 3
+#+
+x := z / f
++#
+code = "init { x : Int }\nx = 5"  # Should be ':='
