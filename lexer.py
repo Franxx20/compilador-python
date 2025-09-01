@@ -3,6 +3,7 @@ from pathlib import Path
 from constantes import MAX_STRING_LENGHT
 import logging
 import re
+from SymbolTableGenerator import stg
 
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
@@ -17,9 +18,6 @@ reserved = {
     'NOT': "NOT",
     'read': 'READ',
     'write': 'WRITE',
-    'Float': 'TIPO_FLOAT',
-    'Int': 'TIPO_INT',
-    'String': 'TIPO_STRING'
 }
 
 # El orden de los elementos de la lista de TOKENS no importa.
@@ -37,6 +35,10 @@ tokens = [
     'COLON',
 
     'OP_ASIGNACION',
+
+    'TIPO_FLOAT',
+    'TIPO_INT',
+    'TIPO_STRING',
 
     'N_FLOAT',
     'N_ENTERO',
@@ -93,6 +95,20 @@ def t_COMENTARIO(t:LexToken):
     r'#\+.*?\+#'
     t.lexer.lineno += t.value.count('\n')
 
+def t_TIPO_FLOAT(t:LexToken):
+    r'Float'
+    # stg.add_symbol(name=t.value, type=t.type)
+    return t
+
+def t_TIPO_INT(t:LexToken):
+    r'Int'
+    # stg.add_symbol(name=t.value, type=t.type)
+    return t
+
+def t_TIPO_STRING(t:LexToken):
+    r'String'
+    # stg.add_symbol(name=t.value, type=t.type)
+    return t
 
 def t_ID(t:LexToken):
     r'[a-zA-Z](\w|_)*'

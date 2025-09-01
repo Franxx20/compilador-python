@@ -1,3 +1,6 @@
+import logging
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 class SymbolTableObject:
     def __init__(self, name:str = None, type:str = None, value:str = None, symbol_size:int = None):
         self.name = name
@@ -27,6 +30,7 @@ class SymbolTableGenerator:
     def add_symbol(self, name:str, type:str = None, value:str = None, symbol_size:int = None):
         if name in self.symbol_table:
             raise Exception(f"Symbol '{name}' already exists in the symbol table.")
+        logging.debug(f'Adding symbol: name={name}, type={type}, value={value}, symbol_size={symbol_size}')
         self.symbol_table[name] = SymbolTableObject(name, type, value, symbol_size)
 
     def get_symbol(self, name:str) -> SymbolTableObject:
@@ -37,10 +41,14 @@ class SymbolTableGenerator:
                '\n'.join(f'{symbol}' for symbol in self.symbol_table.values())
 
     def generate_file(self, filename:str = 'symbol_table.txt'):
+        logging.info(f'Generating symbol table file: {filename}')
         try:
             with open(filename, 'w') as f:
                 f.write("name | type | value | symbol_size\n")
                 for symbol in self.symbol_table.values():
-                    f.write(f'{symbol}\n')
+                    f.write(f'{symbol.name} | {symbol.type} | {symbol.value} | {symbol.symbol_size}\n')
+                    logging.debug(f'Wrote symbol: {symbol}')
         except Exception as e:
             raise Exception(f"Error writing symbol table to file: {e}")
+
+stg = SymbolTableGenerator()

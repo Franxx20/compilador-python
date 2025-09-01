@@ -5,6 +5,7 @@ import logging
 from lexer import tokens, lexer
 from ply.yacc import * # analizador sintactico
 from pathlib import Path
+from SymbolTableGenerator import stg
 
 # Configure logging at the top of the file
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
@@ -36,9 +37,10 @@ precedence = (
     ('left', 'A_PARENTESIS', 'C_PARENTESIS'),
 )
 
-
 def p_start(_p:YaccProduction):
     '''start : programa'''
+    stg.generate_file()
+
     logging.info('FIN')
 
 
@@ -70,7 +72,16 @@ def p_decl_lista(p:YaccProduction):
     '''decl_lista : var_lista COLON TIPO
                   | decl_lista  var_lista COLON TIPO
     '''
-    logging.info('var_lista COLON TIPO -> decl_lista')
+    if len(p) == 4:
+        logging.info(f'var_lista COLON TIPO: {p[3]} -> decl_lista 123123123')
+        for id in p[1]:
+            stg.add_symbol(name=id, type=p[3])
+        p[0] = None
+    else:
+        logging.info(f'decl_lista var_lista COLON TIPO: {p[4]} -> decl_lista 1123123123')
+        for id in p[2]:
+            stg.add_symbol(name=id, type=p[4])
+        p[0] = None
 
 def p_tipo(p:YaccProduction):
     '''TIPO : TIPO_INT
@@ -84,10 +95,12 @@ def p_var_lista(p:YaccProduction):
     '''var_lista : ID
                  | var_lista COMA ID
     '''
-    if len(p) >= 3:
-        logging.info(f'VAR_LISTA COMA ID: {p[3]} -> var_lista')
-    else:
+    if len(p) == 2:
         logging.info(f'ID: {p[1]} -> var_lista')
+        p[0] = [p[1]]
+    else:
+        logging.info(f'VAR_LISTA COMA ID: {p[3]} -> var_lista')
+        p[0] = p[1] + [p[3]]
 
 def p_asignacion(p:YaccProduction):
     '''asignacion : ID OP_ASIGNACION expresion

@@ -1,9 +1,10 @@
-#+
+
 init {
     a1, b2, c3 : Float
     d1, e2, f3 : Int
+    f10: String
 }
-+#
+
 
 #+
 a := 2
@@ -43,4 +44,6 @@ x := 34 * 3
 #+
 x := z / f
 +#
-init { x : Int } x := 5  #+ Should be ':=' +#
+#+
+init { x : Int } x := 5  #+ Should be ':='
++#

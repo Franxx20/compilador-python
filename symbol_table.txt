@@ -1,0 +1,8 @@
+name | type | value | symbol_size
+a1 | Float | None | None
+b2 | Float | None | None
+c3 | Float | None | None
+d1 | Int | None | None
+e2 | Int | None | None
+f3 | Int | None | None
+f10 | String | None | None
