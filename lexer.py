@@ -1,6 +1,10 @@
 from ply.lex import *
 from pathlib import Path
+from constantes import MAX_STRING_LENGHT
+import logging
 import re
+
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 
 # Palabras reservadas
 reserved = {
@@ -129,12 +133,12 @@ def t_error(t:LexError):
 lexer = lex(reflags=re.DOTALL)
 
 
-def ejecutar_lexer():
-    path_lexter = Path('./resources/lexer_test_2.txt')
+def ejecutar_lexer(source_file: str = "./resources/lexer_test_2.txt"):
+    path_lexter = Path(source_file)
     data = path_lexter.read_text()
     lexer.input(data)
     while True:
         token = lexer.token()
         if not token:
             break
-        print(f'TOKEN: {token.type} LEXEMA: {token.value}')
+        logging.info(f'TOKEN: {token.type} LEXEMA: {token.value}')

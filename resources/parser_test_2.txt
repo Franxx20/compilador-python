@@ -43,4 +43,4 @@ x := 34 * 3
 #+
 x := z / f
 +#
-code = "init { x : Int }\nx = 5"  # Should be ':='
+init { x : Int } x := 5  #+ Should be ':=' +#

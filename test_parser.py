@@ -43,11 +43,9 @@ class TestParser(unittest.TestCase):
         self.assertEqual(result, "OK")
 
     def test_invalid_syntax(self):
-        code = "init { x, : Int }"  # Invalid: comma before colon
+        code = "init { x, : Int }" 
         result = self.run_parser_with_code(code)
         self.assertIn("Error en la linea", result)
-
-    # Additional tests below
 
     def test_multiple_declarations(self):
         code = "init { a, b : Int c, d : Float }"

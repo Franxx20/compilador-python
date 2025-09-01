@@ -3,7 +3,7 @@ from lexer import lexer
 
 def tokenize(code):
     lexer.input(code)
-    return [(tok.type, tok.value) for tok in lexer]
+    return [(token.type, token.value) for token in lexer]
 
 class TestLexer(unittest.TestCase):
     def test_integer_token(self):
