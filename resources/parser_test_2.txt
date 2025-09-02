@@ -6,12 +6,12 @@ init {
 }
 
 
-#+
-a := 2
-+#
+a1 := 2
+
+f10 := "hola mi nombre es franco"
 
 #+
-b := a - 2
+b2 := a - 2
 +#
 
 #+

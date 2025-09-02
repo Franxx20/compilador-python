@@ -1,8 +1,15 @@
 name | type | value | symbol_size
+Float | TIPO_FLOAT | None | None
 a1 | Float | None | None
 b2 | Float | None | None
 c3 | Float | None | None
+Int | TIPO_INT | None | None
 d1 | Int | None | None
 e2 | Int | None | None
 f3 | Int | None | None
+String | TIPO_STRING | None | None
 f10 | String | None | None
+_2 | N_ENTERO | None | None
+_hola mi nombre es franco | STRING | None | None
+_34 | N_ENTERO | None | None
+_3 | N_ENTERO | None | None

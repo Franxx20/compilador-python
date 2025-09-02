@@ -97,17 +97,17 @@ def t_COMENTARIO(t:LexToken):
 
 def t_TIPO_FLOAT(t:LexToken):
     r'Float'
-    # stg.add_symbol(name=t.value, type=t.type)
+    stg.add_symbol(name=t.value, type=t.type)
     return t
 
 def t_TIPO_INT(t:LexToken):
     r'Int'
-    # stg.add_symbol(name=t.value, type=t.type)
+    stg.add_symbol(name=t.value, type=t.type)
     return t
 
 def t_TIPO_STRING(t:LexToken):
     r'String'
-    # stg.add_symbol(name=t.value, type=t.type)
+    stg.add_symbol(name=t.value, type=t.type)
     return t
 
 def t_ID(t:LexToken):
@@ -118,17 +118,20 @@ def t_ID(t:LexToken):
 def t_N_FLOAT(t:LexToken):
     r'(\d+\.\d*|\.\d+)'
     t.value = float(t.value)
+    stg.add_symbol(name='_' + str(t.value), type=t.type)
     return t
 
 def t_N_ENTERO(t:LexToken):
     r'\d+'
     t.value = int(t.value)
+    stg.add_symbol(name='_' + str(t.value), type=t.type)
     return t
 
 def t_STRING(t:LexToken):
     r'\"[^\"]*\"'
     # removemos las comillas dobles para obtener un string limpio
     t.value = t.value[1:-1]
+    stg.add_symbol(name='_' + str(t.value), type=t.type)
     return t
 
 # Regla que cuenta la cantidad de lineas

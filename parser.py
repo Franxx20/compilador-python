@@ -5,7 +5,7 @@ import logging
 from lexer import tokens, lexer
 from ply.yacc import * # analizador sintactico
 from pathlib import Path
-from SymbolTableGenerator import stg
+from SymbolTableGenerator import stg, SymbolTableObject
 
 # Configure logging at the top of the file
 logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
@@ -105,6 +105,11 @@ def p_var_lista(p:YaccProduction):
 def p_asignacion(p:YaccProduction):
     '''asignacion : ID OP_ASIGNACION expresion
     '''
+
+    sym: SymbolTableObject = stg.get_symbol(name = str(p.slice[1].value))
+    if not sym:
+        logging.debug(f"Error: Variable '{p.slice[1].value}' no declarada antes de la asignacion.")
+
     logging.info(f'ID: ({p.slice[1].value}) OP_ASIGNACION expresion -> asignacion')
 
 def p_iteracion(p:YaccProduction):
